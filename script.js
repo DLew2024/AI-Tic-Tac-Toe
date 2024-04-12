@@ -26,6 +26,7 @@ var gameBoard;
 const humanPlayer = 'X';
 const aiPlayer = 'O';
 const winCombinations = [
+
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -135,12 +136,12 @@ function winChecker(newBoard, player) {
 
 function gameOver(gameWon) {
     for (let index of winCombinations[gameWon.index]) {
-        document.getElementById(index).style.backgroundColor = gameWon.player == humanPlayer ? "blue" : "red";
+        document.getElementById(index).style.backgroundColor = gameWon.player == humanPlayer ? "gray" : "gray";
     }
     for (var i = 0; i < cells.length; i++) {
         cells[i].removeEventListener('click', clickUpdate, false);
     }
-    gameOverMessage(gameWon.player == humanPlayer ? "You win!" : "You Lose :(")
+    gameOverMessage(gameWon.player == humanPlayer ? "You win!" : "You Lose :(");
 }
 
 /* 
@@ -151,7 +152,7 @@ function gameOver(gameWon) {
 
 function gameOverMessage(who) {
     document.querySelector(".gameover").style.display = "block";
-    document.querySelector(".gameover .text").innerText = who;
+    document.querySelector(".gameover #text").innerText = who;
 }
 
 /* 
@@ -163,7 +164,7 @@ function gameOverMessage(who) {
 function checkTie() {
     if (emptyCells().length == 0) {
         for (var i = 0; i < cells.length; i++) {
-            cells[i].style.backgroundColor = "green";
+            cells[i].style.backgroundColor = "gray";
             cells[i].removeEventListener('click', changeTurn, false);
         }
         gameOverMessage("Tie Game!")
