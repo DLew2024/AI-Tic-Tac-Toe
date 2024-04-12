@@ -3,8 +3,8 @@
     1. Set up game regularly
     2. Find winner
     3. Win Message
-    4. Minimax message
-    5. AI communication
+    4. Minimax Algorthim/message
+    5. AI communication (Not Done)
     6. Game Restart (Loop back to 2)
 */
 
@@ -23,16 +23,20 @@
 */
 
 var gameBoard;
+var finish = null;
 const humanPlayer = 'X';
-const aiPlayer = 'O';
+const AIPlayer = 'O';
 const winCombinations = [
 
+    // Rows
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
+    // Columns
     [0, 3, 6],
     [1, 4, 7],
     [2, 5, 8],
+    // Diagonols
     [0, 4, 8],
     [6, 4, 2]
 ];
@@ -64,6 +68,7 @@ function beginGame() {
         cells[i].style.removeProperty('background-color');
         cells[i].addEventListener('click', clickUpdate, false);
     }
+    finish = false;
 }   
 
 /* 
@@ -77,8 +82,8 @@ function beginGame() {
 function clickUpdate(clickedCell) {
     if (typeof gameBoard[clickedCell.target.id] == 'number') {
         changeTurn(clickedCell.target.id, humanPlayer);
-        if (!checkTie()) {
-            changeTurn(bestSpot(), aiPlayer)
+        if (!finish && !tieChecker()) {
+            changeTurn(bestMoves(), AIPlayer)
         };
     }
 }
@@ -95,8 +100,10 @@ function changeTurn (cellID, player) {
     document.getElementById(cellID).innerText = player;
     let gameWon = winChecker(gameBoard, player);
     if (gameWon) { 
+        finish = true;
         gameOver(gameWon)
     };
+    tieChecker();
 }
 
 /* 
@@ -141,7 +148,7 @@ function gameOver(gameWon) {
     for (var i = 0; i < cells.length; i++) {
         cells[i].removeEventListener('click', clickUpdate, false);
     }
-    gameOverMessage(gameWon.player == humanPlayer ? "You win!" : "You Lose :(");
+    gameOverMessage(gameWon.player == humanPlayer ? "You won!" : "You Loss :(");
 }
 
 /* 
@@ -161,7 +168,7 @@ function gameOverMessage(who) {
     If there is no tie the fuction returns false.
 */
 
-function checkTie() {
+function tieChecker() {
     if (emptyCells().length == 0) {
         for (var i = 0; i < cells.length; i++) {
             cells[i].style.backgroundColor = "gray";
@@ -189,8 +196,8 @@ function emptyCells() {
     functions to see which is the best empty cells to choose next.
 */
 
-function bestSpot() {
-    return minimax(gameBoard, aiPlayer).index;
+function bestMoves() {
+    return minimax(gameBoard, AIPlayer).index;
 }
 
 /* 
@@ -208,11 +215,11 @@ function bestSpot() {
 function minimax(newBoard, player){
     var availSpots = emptyCells(newBoard);
 
-    if (winChecker(newBoard, player)) {
+    if (winChecker(newBoard, humanPlayer)) {
         return {
             score: -10
         };
-    } else if (winChecker(newBoard, aiPlayer)) {
+    } else if (winChecker(newBoard, AIPlayer)) {
         return {
             score: 10
         };
@@ -227,21 +234,25 @@ function minimax(newBoard, player){
         move.index = gameBoard[availSpots[i]];
         newBoard[availSpots[i]] = player;
 
-        if (player == aiPlayer) { 
+        if (player == AIPlayer) { 
             var results = minimax(gameBoard, humanPlayer);
             move.score = results.score; 
         } else {
-            var results = minimax(gameBoard, aiPlayer);
+            var results = minimax(gameBoard, AIPlayer);
             move.score = results.score; 
         }
 
         newBoard[availSpots[i]] = move.index;
 
-        moves.push(move)
+        if ((player === AIPlayer && move.score === 10) || (player === humanPlayer && move.score === -10)) {
+            return move;
+        } else {
+            moves.push(move);
+        }
     }
-    var bestMove;
-    if(player === aiPlayer) {
-        var bestScore = -10000;
+    var bestMove, bestScore;
+    if (player === AIPlayer) {
+        bestScore = -10000;
         for (var i = 0; i < moves.length; i++) {
             if (moves[i].score > bestScore) {
                 bestScore = moves[i].score;
@@ -249,7 +260,7 @@ function minimax(newBoard, player){
             }
         }
     } else {
-        var bestScore = 10000;
+        bestScore = 10000;
         for (var i = 0; i < moves.length; i++) {
             if (moves[i].score < bestScore) {
                 bestScore = moves[i].score;
@@ -257,6 +268,5 @@ function minimax(newBoard, player){
             }
         }
     }
-
     return moves[bestMove];
 }
