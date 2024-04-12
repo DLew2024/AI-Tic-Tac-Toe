@@ -25,7 +25,6 @@ table {
     gap: 2vmin;
 }
 
-/* Change line color thicken border.. Change font */
 td { 
     background: #ffffff;
     width: 22vmin;
@@ -52,7 +51,7 @@ tr {
     display: none;
     height: 150px;
     width: 150px;
-    background-color: #0928f03f;
+    background-color: #2a2b363f;
     position: absolute;
     transform: translate(-50%, -50%);
     top: 50%;
@@ -70,13 +69,13 @@ tr {
     text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
 }
 
-
 #btn {
     font-size: 0.6em;
     padding: 0.5em 1em;
-    background-color: #0b3142;
-    color: #49dcb1;
+    background-color: #000000d3;
+    color: #2aff04;
     border-radius: 0.2em;
     border: none;
     margin-top: 25px;
+    cursor: pointer;
 }
