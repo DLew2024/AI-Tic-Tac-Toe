@@ -81,9 +81,9 @@ function beginGame() {
 
 function clickUpdate(clickedCell) {
     if (typeof gameBoard[clickedCell.target.id] == 'number') {
-        changeTurn(clickedCell.target.id, humanPlayer);
+        changeTurn(clickedCell.target.id, humanPlayer, '#5378ff');
         if (!finish && !tieChecker()) {
-            changeTurn(bestMoves(), AIPlayer)
+            changeTurn(bestMoves(), AIPlayer, '#212121');
         };
     }
 }
@@ -95,9 +95,10 @@ function clickUpdate(clickedCell) {
     Lastly after these are updated it checks if the game is won.
 */
 
-function changeTurn (cellID, player) {
+function changeTurn (cellID, player, color) {
     gameBoard[cellID] = player;
     document.getElementById(cellID).innerText = player;
+    document.getElementById(cellID).style.color = color;
     let gameWon = winChecker(gameBoard, player);
     if (gameWon) { 
         finish = true;
