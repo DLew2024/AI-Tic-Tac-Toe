@@ -214,6 +214,7 @@ function bestMoves() {
 */
 
 function minimax(newBoard, player){
+    // Base Case
     var availSpots = emptyCells(newBoard);
 
     if (winChecker(newBoard, humanPlayer)) {
@@ -230,6 +231,7 @@ function minimax(newBoard, player){
         };
     }
     var moves = [];
+    // Loop through all spaces to recursively determine the best move.
     for (var i = 0; i < availSpots.length; i++) {
         var move = {};
         move.index = gameBoard[availSpots[i]];
@@ -244,13 +246,14 @@ function minimax(newBoard, player){
         }
 
         newBoard[availSpots[i]] = move.index;
-
+        // Collect the best move.
         if ((player === AIPlayer && move.score === 10) || (player === humanPlayer && move.score === -10)) {
             return move;
         } else {
             moves.push(move);
         }
     }
+    // Calculate best move compared to the score
     var bestMove, bestScore;
     if (player === AIPlayer) {
         bestScore = -10000;
@@ -269,5 +272,6 @@ function minimax(newBoard, player){
             }
         }
     }
+    // Apply move
     return moves[bestMove];
 }
