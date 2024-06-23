@@ -31,7 +31,7 @@ If all squares are filled and neither player has aligned three marks, the game e
 
 ## Getting Started
 
-1. **Visit**: Open your browser and go to 
+1. **Visit**: Open your browser and go to https://dlew2024.github.io/AI-Tic-Tac-Toe/
 2. **Play**: Click start game and give it a go.
 3. **Challenge**: Try to outsmart the unbeatable AI or enjoy a fun match with a friend.
 
